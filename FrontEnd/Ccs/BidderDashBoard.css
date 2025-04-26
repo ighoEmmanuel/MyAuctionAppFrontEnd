@@ -1,0 +1,118 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: black;
+}
+
+#search-form{
+    display: flex;
+    justify-content: center;
+}
+
+#search-form input{
+    width: 520px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid black;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+#search-form input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+#search-form button {
+    color: white;
+    background-color: #4a90e2;
+    border:none;
+    text-decoration: none;
+    padding: 10px;
+    width: 100%;
+    max-width: 100px;
+    height: 60px;
+    border-radius: 4px;
+}
+
+#search-form button:hover {
+    transform: translateY(-3px);
+    background-color: #264c6a;
+}
+
+#content{
+    display: flex;
+    background-color: black;
+    gap: 10px;
+
+}
+
+#bid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 20px;
+
+}
+
+.bid-box {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    width: 250px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.bid-box:hover {
+    transform: translateY(-3px);
+    background-color: blue;
+}
+
+.bid-box button:disabled{
+    cursor: not-allowed;
+    color: white;
+}
+.bid-box button {
+    margin-top: 15px;
+    background-color: #4a90e2;
+    padding: 10px;
+    border: none;
+    width: 220px;
+}
+.bid-box input {
+    width: 100%;
+    padding: 10px;
+}
+#productId{
+    display: none;
+}
+
+.bid-error{
+    color: red;
+}
+
+.bid-box button:hover {
+    background-color: #264c6a;
+}
+
+#user{
+    color: white;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+.logo{
+    color: white;
+    display:flex;
+    font-weight: bolder;
+    p{
+        color: blue;
+    }
+}

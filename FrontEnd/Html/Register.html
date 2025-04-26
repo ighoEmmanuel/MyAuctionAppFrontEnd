@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../Ccs/Register.css">
+    <script src="../JavaScript/register.js" defer></script>
+    <title>Register</title>
+</head>
+<body>
+    <div class="mainWrapper">
+        <h1 class="logo">Stone <p>Code</p>Auction</h1>
+        <div class="register">
+            <form id="register-user">
+
+                <label for="userName">UserName</label>
+                <input type="text" name="userName" id="userName" placeholder="Enter your UserName" required>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" name="confirmPassword" id="confirmPassword" required>
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="" disabled selected>Select your role</option>
+                    <option value="seller">Seller</option>
+                    <option value="bidder">Bidder</option>
+                    <div id="error-message"></div>
+                </select>
+
+                <button type="submit">Register</button>
+                <div class="sign-up">
+                    <p>Don't have an account? <p id="sign-up" class="sign-up-text"><a href="Login.html">Log in</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
