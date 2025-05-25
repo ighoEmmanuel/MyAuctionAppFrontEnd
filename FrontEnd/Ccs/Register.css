@@ -119,6 +119,7 @@ body {
 }
 
 #error-message{
+    margin-top: 30px;
     color: red;
     font-weight: bold;
     margin-bottom: 20px;

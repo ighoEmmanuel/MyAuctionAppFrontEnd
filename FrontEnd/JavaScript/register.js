@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         if(password.length < 6) {
-            error.textContent = "The password is too short";
+            error.textContent = "The password is too short\nPassword must be at least 6 characters.";
             return;
         }
         const formData ={

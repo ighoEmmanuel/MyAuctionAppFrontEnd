@@ -40,7 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     userId: result.id,
                     userName: result.username,
                     role: result.role,
-                    email: result.email
+                    email: result.email,
+                    profile: result.profile
                 }));
                 const user = JSON.parse(localStorage.getItem("userData"));
                 // console.log(user)

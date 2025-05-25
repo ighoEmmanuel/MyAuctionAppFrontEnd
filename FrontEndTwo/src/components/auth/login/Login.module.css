@@ -1,0 +1,55 @@
+
+body {
+    height: 100vh;
+    background-color: black;
+    background-size: 300px auto;
+    background-position: left;
+    background-repeat: repeat;
+    animation: changeImage 20s infinite ease-in-out;
+}
+@keyframes changeImage {
+
+    0% {
+        background-image: url('../../image/car1-removebg-preview (1).png');
+    }
+    20% {
+        background-image: url('../../image/watch2-removebg-preview.png');
+    }
+    40% {
+        background-image: url('../../image/watch1-removebg-preview.png');
+    }
+    60% {
+        background-image: url('../../image/car2-removebg-preview.png');
+    }
+    80% {
+        background-image: url('../../image/car2-removebg-preview.png');
+    }
+    100% {
+        background-image: url('../../image/watch2Image-removebg-preview.png');
+    }
+
+}
+
+.form input{
+    display: block;
+    margin-top: 10px;
+    border: gray solid 1px;
+}
+
+.form label{
+    display: block;
+    margin-top: 10px;
+    color: black;
+}
+
+#form{
+    display: grid;
+    place-items: center;
+    align-content: center;
+    box-shadow: 5px 5px 10px black;
+    background: whitesmoke;
+    padding: 100px;
+    border-radius: 15px;
+    max-width: 200px;
+    margin:80px auto;
+}
