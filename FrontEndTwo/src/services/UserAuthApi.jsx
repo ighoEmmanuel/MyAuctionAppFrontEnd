@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 
 
-const url  = "http://localhost:8080/api"
+const url  = "https://auctionappbackend-ef0f.onrender.com/api"
 
 export const userAuthApi = createApi({
     reducerPath: 'userAuthApi',
@@ -9,9 +9,9 @@ export const userAuthApi = createApi({
         baseUrl: `${url}`
     }),
     endpoints: (builder) => ({
-        signUpBidder: builder.mutation({
+        signUp: builder.mutation({
             query: (data) => ({
-                url: "/register/bidder",
+                url: "/register/user",
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -20,16 +20,6 @@ export const userAuthApi = createApi({
             })
         }),
 
-        signUpSeller: builder.mutation({
-            query: (data) => ({
-                url: "/register/seller",
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: data
-            })
-        }),
 
         login: builder.mutation({
             query: (data) => ({
@@ -46,4 +36,4 @@ export const userAuthApi = createApi({
     })
 })
 
-export const {useSignUpBidderMutation,useSignUpSellerMutation,useLoginMutation} = userAuthApi
+export const {useSignUpMutation,useLoginMutation} = userAuthApi

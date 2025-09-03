@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styles from "./SignUp.module.css";
-import { useSignUpBidderMutation, useSignUpSellerMutation } from "../../../services/UserAuthApi.jsx";
+import {useSignUpMutation} from "../../../services/UserAuthApi.jsx"
 import { Link, useNavigate } from "react-router";
+import Header from "../../header/Header.jsx";
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -12,11 +13,10 @@ const SignUp = () => {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "bidder"
     });
 
-    const [signUpBidder] = useSignUpBidderMutation();
-    const [signUpSeller] = useSignUpSellerMutation();
+    const [signUpUser] = useSignUpMutation();
+
     const [passwordError, setPasswordError] = useState("");
     const [backendErrors, setBackendErrors] = useState([]);
     const [successMessage, setSuccessMessage] = useState("");
@@ -64,13 +64,10 @@ const SignUp = () => {
 
         try {
             let response;
-            if (userData.role === "seller") {
-                response = await signUpSeller(payload).unwrap();
-            } else {
-                response = await signUpBidder(payload).unwrap();
-            }
+            response = await signUpUser(payload).unwrap()
 
-
+            const token = response.token;
+            localStorage.setItem("token", token);
             setSuccessMessage(response.message || "Registration successful! Redirecting...");
 
             setTimeout(() => {
@@ -98,82 +95,76 @@ const SignUp = () => {
     };
 
     return (
-        <div className={styles.signUp}>
-                <form  id={styles.form} onSubmit={submitHandler}>
-                    <h2>Create Account</h2>
+        <>
+            <Header/>
+            <div className={styles.signUp}>
+                    <form  id={styles.form} onSubmit={submitHandler}>
+                        <h2>Create Account</h2>
 
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        name="userName"
-                        onChange={handleInput}
-                        required
-                    />
+                        <label>Username</label>
+                        <input
+                            type="text"
+                            name="userName"
+                            onChange={handleInput}
+                            required
+                        />
 
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        onChange={handleInput}
-                        required
-                    />
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            onChange={handleInput}
+                            required
+                        />
 
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        onChange={handleInput}
-                        required
-                        minLength="6"
-                    />
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            onChange={handleInput}
+                            required
+                            minLength="6"
+                        />
 
-                    <label>Confirm Password</label>
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        onChange={handleInput}
-                        required
-                    />
-                    {passwordError && <div className={styles.error}>{passwordError}</div>}
+                        <label>Confirm Password</label>
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            onChange={handleInput}
+                            required
+                        />
+                        {passwordError && <div className={styles.error}>{passwordError}</div>}
 
-                    <label>Role</label>
-                    <select
-                        name="role"
-                        onChange={handleInput}
-                    >
-                        <option value="bidder">Bidder</option>
-                        <option value="seller">Seller</option>
-                    </select>
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className={isLoading ? styles.loading : ""}
+                        >
+                            {isLoading ? 'Signing Up...' : 'Sign Up'}
+                        </button>
 
-                    <button
-                        type="submit"
-                        disabled={isLoading}
-                        className={isLoading ? styles.loading : ""}
-                    >
-                        {isLoading ? 'Signing Up...' : 'Sign Up'}
-                    </button>
+                        {backendErrors.length > 0 && (
+                            <div className={styles.error}>
+                                {backendErrors.map((error, index) => (
+                                    <div key={index}>{error}</div>
+                                ))}
+                            </div>
+                        )}
 
-                    {backendErrors.length > 0 && (
-                        <div className={styles.error}>
-                            {backendErrors.map((error, index) => (
-                                <div key={index}>{error}</div>
-                            ))}
+
+                        {successMessage && (
+                            <div className={styles.success}>
+                                {successMessage}
+                            </div>
+                        )}
+
+                        <div className={styles.link}>
+                            Already have an account? <Link to="/login">Login</Link>
                         </div>
-                    )}
+                    </form>
 
-
-                    {successMessage && (
-                        <div className={styles.success}>
-                            {successMessage}
-                        </div>
-                    )}
-
-                    <div className={styles.link}>
-                        Already have an account? <Link to="/login">Login</Link>
-                    </div>
-                </form>
-
-        </div>
+            </div>
+        </>
     );
 };
 

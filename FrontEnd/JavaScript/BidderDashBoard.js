@@ -330,7 +330,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
             try{
-                const response = await fetch("http://localhost:8080/api/update/address", {
+                const response = await fetch("https://auctionappbackend-ef0f.onrender.com/api/update/address", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -369,7 +369,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     try {
-        const response = await fetch("http://localhost:8080/api/viewAllProducts", {
+        const response = await fetch("https://auctionappbackend-ef0f.onrender.com/api/viewAllProducts", {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
@@ -463,7 +463,7 @@ async function setupBidEvents() {
             };
 
             try {
-                const response = await fetch("http://localhost:8080/api/bid", {
+                const response = await fetch("https://auctionappbackend-ef0f.onrender.com/api/bid", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data)

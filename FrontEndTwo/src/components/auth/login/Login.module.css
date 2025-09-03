@@ -1,5 +1,5 @@
 
-body {
+.loginPage {
     height: 100vh;
     background-color: black;
     background-size: 300px auto;
@@ -7,27 +7,26 @@ body {
     background-repeat: repeat;
     animation: changeImage 20s infinite ease-in-out;
 }
-@keyframes changeImage {
 
+@keyframes changeImage {
     0% {
-        background-image: url('../../image/car1-removebg-preview (1).png');
+        background-image: url('../../../../public/image/car1-removebg-preview (1).png');
     }
     20% {
-        background-image: url('../../image/watch2-removebg-preview.png');
+        background-image: url('../../../../public/image/watch2-removebg-preview.png');
     }
     40% {
-        background-image: url('../../image/watch1-removebg-preview.png');
+        background-image: url('../../../../public/image/watch1-removebg-preview.png');
     }
     60% {
-        background-image: url('../../image/car2-removebg-preview.png');
+        background-image: url('../../../../public/image/car2-removebg-preview.png');
     }
     80% {
-        background-image: url('../../image/car2-removebg-preview.png');
+        background-image: url('../../../../public/image/car2-removebg-preview.png');
     }
     100% {
-        background-image: url('../../image/watch2Image-removebg-preview.png');
+        background-image: url('../../../../public/image/watch2Image-removebg-preview.png');
     }
-
 }
 
 .form input{

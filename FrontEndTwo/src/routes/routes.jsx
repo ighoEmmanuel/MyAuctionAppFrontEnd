@@ -1,9 +1,10 @@
-// src/router/index.jsx (or wherever your router is defined)
 import { createBrowserRouter } from "react-router";
-import Layout from "../components/layout/Layout"; // adjust path
+import Layout from "../components/layout/Layout";
 import SignUp from "../components/auth/signUp/SignUp";
 import Login from "../components/auth/login/Login";
 import HomePage from "../components/homePage/HomePage.jsx";
+import DashBoard from "../components/dashBoards/DashBoard.jsx";
+import AuctionPage from "../components/dashBoards/AuctionPage.jsx";
 
 const router = createBrowserRouter([
 
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
 
     {
         path: "/",
-        element: <HomePage/>,
+        element: <Login/>,
     },
 
 
@@ -25,8 +26,15 @@ const router = createBrowserRouter([
     {
         path: "/login",
         element: <Login />,
+    },
+    {
+        path: "/dashboard",
+        element: <DashBoard/>
+    },
+    {
+        path: "/auction",
+        element: <AuctionPage/>,
     }
-
 
 ]);
 
