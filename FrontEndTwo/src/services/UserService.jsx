@@ -27,10 +27,21 @@ export const userService = createApi({
                 },
                 body: data
             })
+        }),
+
+        placeBid: builder.mutation({
+            query:(data)=>( {
+                url: "/bid",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: data
+            })
         })
     })
 
 })
 
 //
-export const {useGetAvailableProductsQuery,useAuctionProductMutation} = userService
+export const {useGetAvailableProductsQuery,useAuctionProductMutation,usePlaceBidMutation} = userService

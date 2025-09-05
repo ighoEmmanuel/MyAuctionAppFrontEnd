@@ -71,7 +71,7 @@ const SignUp = () => {
             setSuccessMessage(response.message || "Registration successful! Redirecting...");
 
             setTimeout(() => {
-                navigate('/login');
+                navigate('/dashboard');
             }, 2000);
 
         } catch (error) {

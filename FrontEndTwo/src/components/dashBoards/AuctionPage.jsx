@@ -12,6 +12,7 @@ const AuctionPage = () => {
     const [endDate, setEndDate] = useState("");
     const [imageCloud] = useCloudinaryCallMutation();
     const [auctionProduct] = useAuctionProductMutation();
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const getUserFromToken = () => {
@@ -37,7 +38,7 @@ const AuctionPage = () => {
         }
 
         const data = new FormData();
-        data.append("file", `${image}`);
+        data.append("file", image);
         data.append("upload_preset", "auctionApp");
         data.append("cloud_name", "emmastonecode");
         try {
@@ -46,26 +47,26 @@ const AuctionPage = () => {
             return response.secure_url;
         } catch (err) {
             console.error("Upload failed:", err);
-            alert("Image upload failed.");
+            setErrorMessage("Image upload failed.");
             return null;
         }
     };
 
     const submitForm = async () => {
         if (!productName.trim()) {
-            alert("Product name is required");
+            setErrorMessage("Product name is required");
             return;
         }
         if (!price || price <= 0) {
-            alert("Price must be a positive number");
+            setErrorMessage("Price must be a positive number");
             return;
         }
         if (!startDate || !endDate) {
-            alert("Please select both start and end date");
+            setErrorMessage("Please select both start and end date");
             return;
         }
         if (new Date(startDate) >= new Date(endDate)) {
-            alert("Start date must be before end date");
+            setErrorMessage("Start date must be before end date");
             return;
         }
 
@@ -90,7 +91,7 @@ const AuctionPage = () => {
                 navigate("/dashboard");
             }
         } catch (error) {
-            alert(error.message);
+            setErrorMessage(error.message);
         }
     };
 
@@ -107,6 +108,7 @@ const AuctionPage = () => {
                 <input
                     type="text"
                     value={productName}
+                    onClick={() => setErrorMessage("")}
                     onChange={(e) => setProductName(e.target.value)}
                     style={styles.input}
                 />
@@ -117,6 +119,7 @@ const AuctionPage = () => {
                     <input
                         type="number"
                         value={price}
+                        onClick={() => setErrorMessage("")}
                         onChange={(e) => setPrice(e.target.value)}
                         style={styles.input}
                     />
@@ -126,6 +129,7 @@ const AuctionPage = () => {
                 <input
                     type="datetime-local"
                     value={startDate}
+                    onClick={() => setErrorMessage("")}
                     onChange={(e) => setStartDate(e.target.value)}
                     style={styles.input}
                 />
@@ -134,6 +138,7 @@ const AuctionPage = () => {
                 <input
                     type="datetime-local"
                     value={endDate}
+                    onClick={() => setErrorMessage("")}
                     onChange={(e) => setEndDate(e.target.value)}
                     style={styles.input}
                 />
@@ -142,6 +147,7 @@ const AuctionPage = () => {
                 <input
                     type="file"
                     accept="image/*"
+                    onClick={() => setErrorMessage("")}
                     onChange={(e) => setImage(e.target.files[0])}
                     style={styles.input}
                 />
@@ -149,6 +155,7 @@ const AuctionPage = () => {
                 <button type="submit" style={styles.button}>
                     Upload
                 </button>
+                <div style={styles.error}>{errorMessage}</div>
             </form>
         </div>
     );
@@ -195,4 +202,9 @@ const styles = {
         cursor: "pointer",
         fontSize: "16px",
     },
+    error :{
+        paddingTop: "10px",
+        color: "red",
+        fontSize: "20px",
+    }
 };

@@ -10,9 +10,6 @@ export const cloudinaryService = createApi({
             query: (data) => ({
                 url: "/image/upload",
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
                 body: data
             })
         })
