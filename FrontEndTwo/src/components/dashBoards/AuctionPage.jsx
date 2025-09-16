@@ -13,6 +13,7 @@ const AuctionPage = () => {
     const [imageCloud] = useCloudinaryCallMutation();
     const [auctionProduct] = useAuctionProductMutation();
     const [errorMessage, setErrorMessage] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false); // NEW
     const navigate = useNavigate();
 
     const getUserFromToken = () => {
@@ -53,28 +54,41 @@ const AuctionPage = () => {
     };
 
     const submitForm = async () => {
+        setErrorMessage("");
+        setIsSubmitting(true); // disable button immediately
+
         if (!productName.trim()) {
             setErrorMessage("Product name is required");
+            setIsSubmitting(false);
             return;
         }
         if (!price || price <= 0) {
             setErrorMessage("Price must be a positive number");
+            setIsSubmitting(false);
             return;
         }
         if (!startDate || !endDate) {
             setErrorMessage("Please select both start and end date");
+            setIsSubmitting(false);
             return;
         }
         if (new Date(startDate) >= new Date(endDate)) {
             setErrorMessage("Start date must be before end date");
+            setIsSubmitting(false);
             return;
         }
 
         const imageUrl = await handleImageUpload();
-        if (!imageUrl) return;
+        if (!imageUrl) {
+            setIsSubmitting(false);
+            return;
+        }
 
         const user = getUserFromToken();
-        if (!user) return;
+        if (!user) {
+            setIsSubmitting(false);
+            return;
+        }
 
         const data = {
             productName,
@@ -88,10 +102,13 @@ const AuctionPage = () => {
         try {
             const response = await auctionProduct(data).unwrap();
             if (response.status === 200) {
-                navigate("/dashboard");
+                navigate("/dashboard"); // redirect → no need to reset
+            } else {
+                setIsSubmitting(false);
             }
         } catch (error) {
             setErrorMessage(error.message);
+            setIsSubmitting(false);
         }
     };
 
@@ -152,8 +169,8 @@ const AuctionPage = () => {
                     style={styles.input}
                 />
 
-                <button type="submit" style={styles.button}>
-                    Upload
+                <button type="submit" style={styles.button} disabled={isSubmitting}>
+                    {isSubmitting ? "Uploading..." : "Upload"}
                 </button>
                 <div style={styles.error}>{errorMessage}</div>
             </form>
@@ -201,10 +218,11 @@ const styles = {
         borderRadius: "5px",
         cursor: "pointer",
         fontSize: "16px",
+        opacity: 1,
     },
-    error :{
+    error: {
         paddingTop: "10px",
         color: "red",
         fontSize: "20px",
-    }
+    },
 };
