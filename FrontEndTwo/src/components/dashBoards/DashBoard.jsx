@@ -5,22 +5,24 @@ import {
 } from "../../services/UserService.jsx";
 import styles from "./DashBoard.module.css";
 import { jwtDecode } from "jwt-decode";
-import {Link, useNavigate} from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const DashBoard = () => {
     const { data: availableProducts, isLoading, isError, refetch } = useGetAvailableProductsQuery(undefined, {
         pollingInterval: 1000,
     });
     const [placeBidApi] = usePlaceBidMutation();
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [bid, setBid] = useState("");
+
+    const [bids, setBids] = useState({});
+    const [errors, setErrors] = useState({});
+    const [successMessages, setSuccessMessages] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [now, setNow] = useState(new Date()); // 🔥 track current time
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [now, setNow] = useState(new Date());
+
     const navigate = useNavigate();
 
-    // 🔥 keep "now" updated every second
+
     useEffect(() => {
         const timer = setInterval(() => setNow(new Date()), 1000);
         return () => clearInterval(timer);
@@ -44,44 +46,47 @@ const DashBoard = () => {
         }
     };
 
+    const handleBidChange = (productId, value) => {
+        setErrors(prev => ({ ...prev, [productId]: "" }));
+        setSuccessMessages(prev => ({ ...prev, [productId]: "" }));
+        setBids(prev => ({ ...prev, [productId]: value }));
+    };
+
     const placeBid = async (productId) => {
         const user = getUserToken();
         const userId = user?.sub;
+        const bid = bids[productId];
 
         if (!userId) {
-            setError("User not logged in!");
+            setErrors(prev => ({ ...prev, [productId]: "User not logged in!" }));
             return;
         }
 
         if (!bid || isNaN(bid) || Number(bid) <= 0) {
-            setError("Please enter a valid bid amount!");
+            setErrors(prev => ({ ...prev, [productId]: "Please enter a valid bid amount!" }));
             return;
         }
 
-        const data = {
-            userId,
-            productId,
-            price: bid
-        };
+        const data = { userId, productId, price: bid };
 
         try {
             setIsSubmitting(true);
             const response = await placeBidApi(data).unwrap();
-           if (response.bid !== "undefined"){
-               setSuccessMessage(`Bid of ₦${bid} placed successfully!`);
-               setBid("");
-               await refetch();
-           }
 
-
-
+            if (response.bid !== "undefined") {
+                setSuccessMessages(prev => ({
+                    ...prev,
+                    [productId]: `Bid of ₦${bid} placed successfully!`
+                }));
+                setBids(prev => ({ ...prev, [productId]: "" }));
+                await refetch();
+            }
         } catch (error) {
-            setError(error.data.message);
+            setErrors(prev => ({ ...prev, [productId]: error.data.message }));
         } finally {
             setIsSubmitting(false);
         }
     };
-
 
     const formatCountdown = (ms) => {
         if (ms <= 0) return "00d 00:00:00";
@@ -98,7 +103,7 @@ const DashBoard = () => {
     return (
         <>
             <div className={styles.topBar}>
-                To Auction Your Product click this<Link to="/auction">Auction Product</Link>
+                To Auction Your Product click this <Link to="/auction">Auction Product</Link>
             </div>
             <div className={styles.grid}>
                 {availableProducts?.map(product => {
@@ -119,9 +124,7 @@ const DashBoard = () => {
                         countdown = "Bidding ended";
                     }
 
-
                     return (
-
                         <div key={product.id} className={styles.card}>
                             <div
                                 className={styles.imageWrapper}
@@ -134,7 +137,6 @@ const DashBoard = () => {
                                 />
                             </div>
 
-                            {/* Content */}
                             <div className={styles.cardBody}>
                                 <div className={styles.field}>
                                     <span className={styles.label}>Product Name:</span>
@@ -151,24 +153,18 @@ const DashBoard = () => {
                                     <p className={styles.price}>₦{product.price.toLocaleString()}</p>
                                 </div>
 
-                                {/* countdown display */}
                                 <div className={styles.countdown}>{countdown}</div>
 
-                                {/* Bid input */}
                                 <input
                                     type="number"
                                     min="1"
-                                    value={bid}
-                                    onChange={(e) => {
-                                        setError("")
-                                        setSuccessMessage("")
-                                        setBid(e.target.value)}}
+                                    value={bids[product.id] || ""}
+                                    onChange={(e) => handleBidChange(product.id, e.target.value)}
                                     placeholder="Enter your amount"
                                     className={styles.input}
-                                    disabled={status !== "open"} // disable if not active
+                                    disabled={status !== "open"}
                                 />
 
-                                {/* Place Bid button */}
                                 <div className={styles.bid}>
                                     <button
                                         onClick={() => placeBid(product.id)}
@@ -178,15 +174,14 @@ const DashBoard = () => {
                                     </button>
                                 </div>
 
-                                <div className={styles.error}>{error}</div>
-                                <div className={styles.successMessage}>{successMessage}</div>
+                                <div className={styles.error}>{errors[product.id]}</div>
+                                <div className={styles.successMessage}>{successMessages[product.id]}</div>
                             </div>
                         </div>
                     );
                 })}
             </div>
 
-            {/* Modal for larger image */}
             {selectedImage && (
                 <div className={styles.modal} onClick={() => setSelectedImage(null)}>
                     <img src={selectedImage} alt="Product preview" className={styles.modalImage} />
