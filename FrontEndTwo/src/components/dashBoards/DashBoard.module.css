@@ -92,6 +92,26 @@
     z-index: 999;
 }
 
+.topBar{
+        margin-top: 1.5rem;
+        text-align: center;
+        font-size: 0.9rem;
+        color: white;
+    }
+
+    .topBar a {
+        color: #004fff;
+        text-decoration: none;
+        font-weight: 500;
+        padding-left: 10px;
+    }
+
+    .topBar a:hover {
+        color: #1d4ed8;
+        text-decoration: underline;
+    }
+
+
 .bid button {
     border: none;
     color: white;

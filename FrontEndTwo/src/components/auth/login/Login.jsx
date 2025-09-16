@@ -54,7 +54,6 @@ const Login = () => {
             <div className={style.loginPage}>
                 <div className={styles.signUp}>
                     <div id={style.form}>
-                        {/* ✅ onSubmit is now on the form */}
                         <form onSubmit={submitHandler}>
                             <label htmlFor="email">Email</label>
                             <input type="email" name="email" onChange={handleChange} required />
