@@ -16,7 +16,7 @@ const DashBoard = () => {
     const [bids, setBids] = useState({});
     const [errors, setErrors] = useState({});
     const [successMessages, setSuccessMessages] = useState({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState({});
     const [selectedImage, setSelectedImage] = useState(null);
     const [now, setNow] = useState(new Date());
 
@@ -70,7 +70,7 @@ const DashBoard = () => {
         const data = { userId, productId, price: bid };
 
         try {
-            setIsSubmitting(true);
+            setIsSubmitting(prev => ({ ...prev, [productId]: true }));
             const response = await placeBidApi(data).unwrap();
 
             if (response.bid !== "undefined") {
@@ -84,7 +84,7 @@ const DashBoard = () => {
         } catch (error) {
             setErrors(prev => ({ ...prev, [productId]: error.data.message }));
         } finally {
-            setIsSubmitting(false);
+            setIsSubmitting(prev => ({ ...prev, [productId]: false }));
         }
     };
 
